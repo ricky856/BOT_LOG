@@ -1,9 +1,9 @@
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 
 const TOKEN = process.env.DISCORD_TOKEN;           // Token del bot
-const CHANNEL_ID = "ID_DEL_CANAL";                 // ej: 123456789012345678
-const ROLE_ID = "ID_DEL_ROL_ARK";                  // ej: 112233445566778899
-const DELETE_ORIGINAL = false;                     // true si quieres borrar el mensaje original del webhook
+const CHANNEL_ID = "1431595668689911889";                 // ej: 123456789012345678
+const ROLE_ID = "816732884407943188";                  // ej: 112233445566778899
+const DELETE_ORIGINAL = true;                     // true si quieres borrar el mensaje original del webhook
 
 // Palabras o frases que activarán la mención
 const TRIGGER_PHRASES = [
