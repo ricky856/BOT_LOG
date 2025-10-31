@@ -10,6 +10,7 @@ const TRIGGER_PHRASES = [
   "destroyed your",
   "lunar",
   "your tribe killed"
+  "was killed"
 ];
 
 // Frases exactas a excluir (si están, NO se hace ping ni se borra nada)
