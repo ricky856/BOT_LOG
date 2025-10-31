@@ -9,7 +9,7 @@ const TRIGGER_PHRASES = [
   "was killed by",
   "destroyed your",
   "lunar",
-  "your tribe killed"
+  "your tribe killed",
   "was killed"
 ];
 
