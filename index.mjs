@@ -3,7 +3,7 @@ import { Client, GatewayIntentBits, Partials } from "discord.js";
 const TOKEN = process.env.DISCORD_TOKEN;           // Token del bot
 const CHANNEL_ID = "1431595668689911889";                 // ej: 123456789012345678
 const ROLE_ID = "816732884407943188";                  // ej: 112233445566778899
-const DELETE_ORIGINAL = true;                     // true si quieres borrar el mensaje original del webhook
+const DELETE_BOT_MESSAGES = true;                  // true = borra los mensajes @ARK del bot, false = los deja
 
 // Frases que activan la mención
 const TRIGGER_PHRASES = [
@@ -13,7 +13,7 @@ const TRIGGER_PHRASES = [
   "your tribe killed"
 ];
 
-// Frases o textos exactos que deben ignorarse (sin importar mayúsculas/minúsculas)
+// Frases que deben excluirse (no hacen ping aunque coincidan)
 const EXCLUDED_PHRASES = [
   "destroyed your 'inx c4 charge'"
 ];
@@ -34,8 +34,16 @@ client.once("clientReady", () => {
 
 client.on("messageCreate", async (message) => {
   try {
-    // Ignora mensajes del propio bot
-    if (message.author?.bot && !message.webhookId) return;
+    // Ignorar mensajes del propio bot (para no crear bucles)
+    if (message.author?.id === client.user.id) {
+      // Si el mensaje lo ha mandado el bot y se debe borrar automáticamente:
+      if (DELETE_BOT_MESSAGES && message.content.includes(`<@&${ROLE_ID}>`)) {
+        setTimeout(() => {
+          message.delete().catch(() => {});
+        }, 15000); // ← tiempo antes de borrarlo (15 segundos)
+      }
+      return;
+    }
 
     // Solo en el canal configurado
     if (message.channelId !== CHANNEL_ID) return;
@@ -60,11 +68,6 @@ client.on("messageCreate", async (message) => {
         allowedMentions: { roles: [ROLE_ID] }
       });
       console.log(`Mención enviada: ${content}`);
-    }
-
-    // (Opcional) borrar el original si se desea
-    if (DELETE_ORIGINAL && message.deletable) {
-      await message.delete().catch(() => {});
     }
 
   } catch (err) {
